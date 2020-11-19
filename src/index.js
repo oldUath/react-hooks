@@ -1,41 +1,33 @@
-import React, { createContext, useContext, useReducer, useState } from 'react'
+import React, { useEffect,useState } from 'react'
 import ReactDOM from 'react-dom'
 
-// 创造一个上下文
-const C = createContext(null);
 
 function App(){
-  const [n,setN] = useState(0)
-  return(
-    // 指定上下文使用范围，使用provider,并传入读数据和写入据
-    <C.Provider value={{n,setN}}>
-      这是爷爷
-      <Baba></Baba>
-    </C.Provider>
-  )
-}
-
-function Baba(){
-  return(
-    <div>
-      这是爸爸
-      <Child></Child>
-    </div>
-  )
-}
-function Child(){
-  // 使用上下文，因为传入的是对象，则接受也应该是对象
-  const {n,setN} = useContext(C)
+  const [n,setN] = useState(0);
   const add=()=>{
-    setN(n=>n+1)
+    setN(i=>i+1);
   };
+
+// 第一次渲染，只执行这一次，[]要在第二个参数
+useEffect(()=>{
+      console.log('这是第一次渲染执行这句话');
+    },[]);
+// 第一,二，三次渲染，每次都执行，不用写第二个参数
+useEffect(()=>{
+  console.log('这是第1.2.3次渲染执行这句话');
+});
+//当n变化了就执行这句
+  useEffect(()=>{
+    console.log('n变了');
+  },[n])
+
+
   return(
     <div>
-      这是儿子:n:{n}
+      n:{n}
       <button onClick={add}>+1</button>
     </div>
   )
 }
-
 
 ReactDOM.render(<App />,document.getElementById('root'));
