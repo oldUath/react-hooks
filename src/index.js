@@ -1,42 +1,42 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
+// //useRef
+// function App(){
+//   console.log('app执行了')
+//   const count = useRef(0);
+//   const [n,setN] = useState(0);
+//   const add=()=>{
+//     setN(i=>i+1);
+//     count.current+=1
+//     console.log(count.current)
+//   };
 
+//   return(
+//     <div>
+//       <div>
+//         n:{n}
+//         <button onClick={add}>n+1</button>
+//       </div>
+//     </div>
+//   )
+// }
+
+//forwordRef
 function App(){
-  const [n,setN] = useState(0);
-  const [m,setM] = useState(0);
-  const add=()=>{
-    setN(i=>i+1);
-  };
-  const addChild=()=>{
-    setM(i=>i+1);
-  };
-  const onClickChild=useMemo(()=>{
-    return ()=>{
-      console.log(m)
-    }
-  },[m])
-
+  const buttonRef = useRef(null);
   return(
     <div>
-      <div>
-        n:{n}
-        <button onClick={add}>n+1</button>
-        <button onClick={addChild}>m+1</button>
-      </div>
-      <Child2 data={m} onClick={onClickChild} />
+      <Button1 ref={buttonRef}>按钮</Button1>
     </div>
   )
 }
-function Child(props){
-  console.log('child执行了')
-  console.log('这里有很多代码')
-  return(
-    <div onClick={props.onClick}>
-      child:{props.data}
-    </div>
-      )
-}
-// 
-const Child2 = React.memo(Child)
+const Button1=React.forwardRef((props,ref)=>{
+  console.log(props)
+  console.log(ref)
+  return <button ref={ref}{...props}></button>
+})
+
+
+
 ReactDOM.render(<App />,document.getElementById('root'));
